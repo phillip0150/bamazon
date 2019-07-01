@@ -3,96 +3,57 @@
 Wish you could do your amazon shopping on the Command Line? Well now you can with bamazon! 
 
 
-[Link to app](https://github.com/phillip0150/LIRI)
+[Link to app](https://github.com/phillip0150/bamazon)
 
 ## Technologies
 
-LIRI was written with `javascript`, `node.js`, `axios`, `node-spotify-api`, `moment.js`.
+bamazon was written with `javascript`, `node.js`, `mysql`, `inquirer`, `dotenv`.
 
-API used are `spotify`, `bandsintown`, and `omdb`.
+
 
 ## How to use
 
+### Challenge 1
+[Video of app in action (google drive link)](https://drive.google.com/file/d/1Glp6JPhKHKMyvj-3-RLevV9trhKNIyOy/view)
 
 
-[Video of app in action (google drive link)](https://drive.google.com/file/d/1fU0dCr0G2C1ELdFc5IGHCohnhX6IQ9sO/view)
-OR
-[Video of app in action (github download)](https://github.com/phillip0150/LIRI/blob/master/video/Jun%2025%2C%202019%206_34%20PM.webm)
-
-You will need to install axios, node-spotify-api, and moment packages in the same folder as your program.
+You will need to install inquirer, dotenv, and mysql packages in the same folder as your program.
 
 ```bash
-  npm install axios
-  npm install node-spotify-api
-  npm install moment
+  npm install mysql
+  npm install inquirer
+  npm install dotenv
 ```
 
 To run the program, you need to open your computer's terminal and enter the follow command:
 
 ```bash
-  node liri.js
+  node bamazonCustomer.js
 ```
-![screenShot](https://github.com/phillip0150/LIRI/blob/master/images/1.png?raw=true)
+![screenShot](https://github.com/phillip0150/bamazon/blob/master/images/1.png?raw=true)
 
-From there, you are presented with a list of commands that the program can do.
+From there, you are presented with a list of items from bamazon.
 
-### Searching a song
+### Buying on bamazon
 
-To search a song, type `spotify-this-song` with a song name. For example:
+To buy an item, type in the correct product ID:
 ```bash
-  node liri.js spotify-this-song Wake Up in The Sky
+  ? Please slected the ID number of the item you would like to purchase 4
 ```
-![screenShot](https://github.com/phillip0150/LIRI/blob/master/images/2.png?raw=true)
-
-Once you enter a search, you are presented with a list. The list will contain a `Artist`, `Song name`, `Link`, and a `Album`. Hovering over `Link` and using the following shortcut `cmd + mouse click`, will take you to spotify song page.
 
 ![screenShot](https://github.com/phillip0150/LIRI/blob/master/images/3.png?raw=true)
 
-
-### Searching a concert
-
-To search a concert, type `concert-this` with a artist. For example:
+Once you enter a product ID, you are asked to enter the amount you want to purchase:
 ```bash
-  node liri.js concert-this Lil Pump
-```
-![screenShot](https://github.com/phillip0150/LIRI/blob/master/images/4.png?raw=true)
-
-Once you enter a search, you are presented with a list. The list will contain the `Artist`, `Venue Name`, `Venue Location`, and the `Date of Event`.
-
-### Searching a movie
-
-To search a movie, type `movie-this` with a movie name. For example:
-```bash
-  node liri.js movie-this Fight Club
-```
-![screenShot](https://github.com/phillip0150/LIRI/blob/master/images/5.png?raw=true)
-
-From there, you are presented with a list. The list will contain the `Title`, `Release date`, `IMDB Rating`, `Rotten Tomatoe Rating`, `Country where it was produced`, `Movie language`, `The plot`, and the `Actors`.
-
-### Searching with a file
-
-To search with a file, type `do-what-it-says`. You need to make sure that you have a text file named `random.txt` in the folder where LIRI lives. In `random.txt` the text format needs to be `<command>,<input>`. For example:
-```text
-  spotify-this-song,Killing in the Name of
+  ? Please slected the ID number of the item you would like to purchase 4
+  ? How much would you like? 20
 ```
 
-Once your text file is in the correct format, type:
-
-```bash
-  node liri.js do-what-it-says
-```
-
-![screenShot](https://github.com/phillip0150/LIRI/blob/master/images/6.png?raw=true)
-
-From there, you are presented with the results. You can have multiple searches in the the text file. 
-```text
-  spotify-this-song,Killing in the Name of,movie-this,Forrest Gump
-```
 
 
 ### Error handling
 
-#### Searching a song
+#### Product ID#
 
 If the user doesn't enter a song name, the program defaults to "The Sign"
 
@@ -109,7 +70,7 @@ If the program cannot find a song, it will display a message
   Sorry, no results. Please search another song.
 ```
 
-#### Searching a concert
+#### Quantity
 
 If the user doesn't enter a artist, the program defaults to "Lil Pump"
 
@@ -124,23 +85,6 @@ If the program cannot find a concert, it will display a message
 ```text
   node liri.js concert-this Taylor Swift
   Sorry, no concert for Taylor Swift
-```
-
-#### Searching a movie
-
-If the user doesn't enter a movie, the program defaults to "Mr. Nobody"
-
-```bash
-  node liri.js movie-this
-```
-
-![screenShot](https://github.com/phillip0150/LIRI/blob/master/images/9.png?raw=true)
-
-If the program cannot find a concert, it will display a message
-
-```text
-  node liri.js movie-this fjdklsafjdsa
-  Sorry, no results. Please search another movie.
 ```
 
 

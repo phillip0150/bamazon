@@ -1,12 +1,19 @@
 var inquirer = require('inquirer');
 var connection = require("./server.js");
 
-
-function enoughtInStock(stockNumber, theItem){
+//function that sees if that item is in stock
+//takes in the amount the user wants (stockNumber) and the item (theItem)
+function enoughInStock(stockNumber, theItem){
+  //connection to call sql command
   connection.query("SELECT price, product_name, stock_quantity FROM items WHERE item_id = "+parseInt(theItem), function (err, res) {
     if (err) throw err;
+    //the current stock quantity
     var oldStockQuantity = parseInt(res[0].stock_quantity);
+    //the price of the item
     var thePrice = parseInt(res[0].price);
+    //if the users quantity number is greater than the current stock quantity
+    //we tell the user that we do not have enough and to enter another quantity number
+    //from there, call another prompt and recall the current function (enoughInStock)
     if(stockNumber > res[0].stock_quantity){
       console.log("Sorry, we do not have enough! Please select another quantity number. If you want to quit the program press CTRL+C");
       inquirer.prompt([
@@ -17,18 +24,23 @@ function enoughtInStock(stockNumber, theItem){
   
         }
       ]).then(function (response) {
-        enoughtInStock(response.quanity, theItem);
+        //calling en
+        enoughInStock(response.quanity, theItem);
         
       });
     }
+    //else, we know there is enough in stock
     else {
-
+      //setting the new stock amount of that item
       var newStock = oldStockQuantity - parseInt(stockNumber);
+      //the total of what the user owes
       var total = thePrice*parseInt(stockNumber);
+      //calling another query to update the item stock quantity
       connection.query("UPDATE items SET stock_quantity="+newStock+" WHERE item_id="+theItem, function (err, res) {
         // console.log(res);
         if (err) throw err;
         console.log("Thanks! Your total is $"+ total+ ". Taking you back to the home screen! If you want to quit the program press CTRL+C\n");
+        //calling selectBidItem() [restarting program]
         selectBidItem();
       });
     
@@ -38,9 +50,14 @@ function enoughtInStock(stockNumber, theItem){
   
 }
 
+//this function checks to see if the item exists
+//takes a itemID
 function seeIfItemExist(itemID) {
+  //calling a sql command
   connection.query("SELECT item_id FROM items WHERE item_id = "+parseInt(itemID), function (err, res) {
     if (err) throw err;
+    //if res.length ===0, we know that we did not find that item
+    //display error message
     if(res.length === 0){
       console.log("\n---------------------------------------------");
       console.log("-----------------ERROR-----------------------");
@@ -51,6 +68,7 @@ function seeIfItemExist(itemID) {
       console.log("---------------------------------------------\n");
       selectBidItem();
     }
+    //else, we know we found an item, call prompts
     else{
       inquirer.prompt([
         {
@@ -60,7 +78,8 @@ function seeIfItemExist(itemID) {
   
         }
       ]).then(function (response) {
-        enoughtInStock(response.quanity, itemID);
+        //once we get a response, we see if we have enough in stock
+        enoughInStock(response.quanity, itemID);
         
       });
     }
@@ -70,10 +89,12 @@ function seeIfItemExist(itemID) {
 }
 
 function selectBidItem() {
-  //grab items available to bid on.
+  //calling sql command to display all items
   connection.query("SELECT * FROM items", function (err, res) {
     // console.log(res);
     if (err) throw err;
+    //showing the list of the products
+    //using for loop to display items
     console.log("\nHere is a list of our products!\n");
     console.log("-------------------------------");
     for(var i in res){
@@ -85,6 +106,7 @@ function selectBidItem() {
       console.log("-------------------------------\n");
 
     }
+    //using prompt to ask using to enter the id number of the product they want to buy
     inquirer.prompt([
       {
         type: "input",
@@ -93,6 +115,7 @@ function selectBidItem() {
 
       }
     ]).then(function (response) {
+      //check to see if item exist
       seeIfItemExist(response.idNumber);
       
     });
@@ -100,7 +123,6 @@ function selectBidItem() {
   
 }
 
+//calling selectBidItem
 selectBidItem();
-
-
 

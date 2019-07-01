@@ -40,8 +40,8 @@ function enoughInStock(stockNumber, theItem){
         // console.log(res);
         if (err) throw err;
         console.log("Thanks! Your total is $"+ total+ ". Taking you back to the home screen! If you want to quit the program press CTRL+C\n");
-        //calling selectBidItem() [restarting program]
-        selectBidItem();
+        //calling selectItem() [restarting program]
+        selectItem();
       });
     
 
@@ -66,7 +66,7 @@ function seeIfItemExist(itemID) {
       console.log("---------------------------------------------");
       console.log("---------------------------------------------");
       console.log("---------------------------------------------\n");
-      selectBidItem();
+      selectItem();
     }
     //else, we know we found an item, call prompts
     else{
@@ -88,7 +88,7 @@ function seeIfItemExist(itemID) {
 
 }
 
-function selectBidItem() {
+function selectItem() {
   //calling sql command to display all items
   connection.query("SELECT * FROM items", function (err, res) {
     // console.log(res);
@@ -123,6 +123,6 @@ function selectBidItem() {
   
 }
 
-//calling selectBidItem
-selectBidItem();
+//calling selectItem
+selectItem();
 

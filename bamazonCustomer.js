@@ -1,9 +1,6 @@
 var inquirer = require('inquirer');
-const prompts = require('prompts');
 var connection = require("./server.js");
-var mysql = require("mysql");
-var userInput = process.argv.slice(2).join(" ");
-var theString = "";
+
 
 function enoughtInStock(stockNumber, theItem){
   connection.query("SELECT price, product_name, stock_quantity FROM items WHERE item_id = "+parseInt(theItem), function (err, res) {
@@ -31,7 +28,7 @@ function enoughtInStock(stockNumber, theItem){
       connection.query("UPDATE items SET stock_quantity="+newStock+" WHERE item_id="+theItem, function (err, res) {
         // console.log(res);
         if (err) throw err;
-        console.log("Thanks! Your total is $"+ total+ ". Taking you back to the home screen!\n");
+        console.log("Thanks! Your total is $"+ total+ ". Taking you back to the home screen! If you want to quit the program press CTRL+C\n");
         selectBidItem();
       });
     
@@ -102,7 +99,6 @@ function selectBidItem() {
   });
   
 }
-
 
 selectBidItem();
 

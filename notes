@@ -1,0 +1,12 @@
+Challenge #1: Customer View
+
+My Program will first display all the items, then asks the user the ID of the product they would like to buy.
+If a user enters a ID that doesn't exist, a message will prompt the user that the items doesn't exist
+
+The second message asks how many units of the product they would like to buy.
+If a users enters a unit of numbers that is too much, a message will prompt the user to enter a different number.
+if the store does have enough of the product, the customer's order is fulfilled.
+
+Once the order is fulfilled, the program restarts.
+
+https://drive.google.com/file/d/1Glp6JPhKHKMyvj-3-RLevV9trhKNIyOy/view

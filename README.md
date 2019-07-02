@@ -30,9 +30,13 @@ To run the program, you need to open your computer's terminal and enter the foll
 ```bash
   node bamazonCustomer.js
 ```
-![screenShot](https://github.com/phillip0150/bamazon/blob/master/images/1.png?raw=true)
 
 From there, you are presented with a list of items from bamazon.
+
+
+![screenShot](https://github.com/phillip0150/bamazon/blob/master/images/1.png?raw=true)
+
+
 
 ### Buying on bamazon
 
@@ -41,260 +45,174 @@ To buy an item, type in the correct product ID:
   ? Please slected the ID number of the item you would like to purchase 4
 ```
 
-![screenShot](https://github.com/phillip0150/LIRI/blob/master/images/3.png?raw=true)
+![screenShot](https://github.com/phillip0150/bamazon/blob/master/images/3.png?raw=true)
 
 Once you enter a product ID, you are asked to enter the amount you want to purchase:
 ```bash
   ? Please slected the ID number of the item you would like to purchase 4
   ? How much would you like? 20
 ```
+After entering an amount, you are presented with a total and taken back to the home screen.
 
+![screenShot](https://github.com/phillip0150/bamazon/blob/master/images/7.png?raw=true)
+
+The program updates the product with the new stock quantity.
+
+
+### Exiting Program
+
+To exit the program at anytime, press `CTRL+C` on your keyboard
+
+![screenShot](https://github.com/phillip0150/bamazon/blob/master/images/6.png?raw=true)
 
 
 ### Error handling
 
-#### Product ID#
+#### Product ID
 
-If the user doesn't enter a song name, the program defaults to "The Sign"
+If the user enters a ID that doesn't exist, a message appears to the user.
 
-```bash
-  node liri.js spotify-this-song
-```
+![screenShot](https://github.com/phillip0150/bamazon/blob/master/images/2.png?raw=true)
 
-![screenShot](https://github.com/phillip0150/LIRI/blob/master/images/7.png?raw=true)
-
-If the program cannot find a song, it will display a message
-
-```text
-  node liri.js spotify-this-song fjkdls;ajfkdls;a
-  Sorry, no results. Please search another song.
-```
+Once the message appears, the program restarts and the user is prompt to enter a product ID
 
 #### Quantity
 
-If the user doesn't enter a artist, the program defaults to "Lil Pump"
+If the user enters a quantity number that is greater than the stock number of an item, the user will be asked to enter a new amount.
 
-```bash
-  node liri.js concert-this
-```
 
-![screenShot](https://github.com/phillip0150/LIRI/blob/master/images/8.png?raw=true)
+![screenShot](https://github.com/phillip0150/bamazon/blob/master/images/4.png?raw=true)
 
-If the program cannot find a concert, it will display a message
-
-```text
-  node liri.js concert-this Taylor Swift
-  Sorry, no concert for Taylor Swift
-```
 
 
 ## Organization
 
 ### Functions
 
-#### Spotify Function
+This program uses three functions `selectItem()`, `seeIfItemExist(itemID)`, and `enoughInStock(stockNumber, theItem)`.
+
+#### selecItem() Function
+
+This function is called in the begining of the progam. It calls a sql command to display all items. From there, the function prompts the user to enter the product ID. We use the function seeIfItemExist to see if the item they entered in exits.
 ```javascript
-    //Spotify Function
-    function spotifySearch(song){
-    //if the user doesn't enter a song, we assign song as "The Sign"
-    if (song === ""){
-        song = "The Sign";
-    }
-    //setting up the search
-    spotify.search({ type: 'track', query: song }, function(err, data) {
-        if (err) {
-            return console.log('Error occurred: ' + err);
-        }
-        //if this is 0, we know that we coudln't find a song
-        if(data.tracks.items.length === 0){
-            console.log("Sorry, no results. Please search another song.");
-        }
-        //for loop to display all the songs found
-        for (var i = 0; i<  data.tracks.items.length; i++){
-            console.log("-------------------------");
-            console.log("Artist: " + data.tracks.items[i].artists[0].name);
-            console.log("Song name: " + data.tracks.items[i].name);
-            console.log("Link: " + data.tracks.items[i].external_urls.spotify);
-            console.log("Album: " + data.tracks.items[i].album.name);
-            console.log("-------------------------");
-        } 
-    });
-}
-```
-
-#### Movie Function
-
-```javascript
-    //movie-this function
-    function movie(movieName) {
-        //if the user enters a blank movie, we set movie to Mr. Nobody
-        if (movieName === ""){
-            movieName = "Mr. Nobody";
-        }
-        // Then run a request with axios to the OMDB API with the movie specified
-        var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy";
-
-        axios.get(queryUrl).then(
-            function(response) {
-                //if response length is 0, we didn't get a result
-                if(response.data.length === 0){
-                    console.log("Sorry, no results. Please search another movie.");
-                }
-                //displaying movie info
-                console.log("------------------------------");
-                console.log(`Title: ${response.data.Title}`);// * Title of the movie.
-                console.log(`Released: ${response.data.Released}`);//* Year the movie came out.
-                console.log(`IMDB Rating: ${response.data.imdbRating}`);//* IMDB Rating of the movie.
-                console.log(`Rotten Tomatoes Rating: ${response.data.Ratings[1].Value}`);//* Rotten Tomatoes Rating of the movie.
-                console.log(`Country where it was produced: ${response.data.Country}`);//* Country where the movie was produced.
-                console.log(`Movie language: ${response.data.Language}`);//* Language of the movie.
-                console.log(`Plot: ${response.data.Plot}`);//* Plot of the movie.
-                console.log(`Actors: ${response.data.Actors}`);//* Actors in the movie.
-                console.log("------------------------------");
-            })
-            .catch(function(error) {
-                if (error.response) {
-                    // The request was made and the server responded with a status code
-                    // that falls out of the range of 2xx
-                    console.log("---------------Data---------------");
-                    console.log(error.response.data);
-                    console.log("---------------Status---------------");
-                    console.log(error.response.status);
-                    console.log("---------------Status---------------");
-                    console.log(error.response.headers);
-                } else if (error.request) {
-                    // The request was made but no response was received
-                    // `error.request` is an object that comes back with details pertaining to the error that occurred.
-                    console.log(error.request);
-                } else {
-                    // Something happened in setting up the request that triggered an Error
-                    console.log("Error", error.message);
-                }
-                console.log(error.config);
-        });
-    }
-```
-
-#### Concert Function
-
-```javascript
-    //concert-this function
-    function concert(artist){
-      //if the artist is blank, user didn't enter anything
-      //set artist to "Lil Pump"
-      if (artist === ""){
-          artist = "Lil Pump";
+    function selectItem() {
+    //calling sql command to display all items
+    connection.query("SELECT * FROM items", function (err, res) {
+      // console.log(res);
+      if (err) throw err;
+      //showing the list of the products
+      //using for loop to display items
+      console.log("\nHere is a list of our products!\n");
+      console.log("-------------------------------");
+      for(var i in res){
+        console.log(`Product ID: ${res[i].item_id}`);
+        console.log(`Product Name: ${res[i].product_name}`);
+        console.log(`Department: ${res[i].department_name}`);
+        console.log(`Price: ${res[i].price}`);
+        console.log(`Quantity: ${res[i].stock_quantity}`);
+        console.log("-------------------------------\n");
       }
-      //setting the query
-      var queryUrl = "https://rest.bandsintown.com/artists/" + artist.trim() + "/events?app_id=codingbootcamp";
-      //using axios to get repsonse
-      axios.get(queryUrl).then(
-          function(response) {
-              //if response lenght is 0, we know that the artist doesn't have a concert coming up
-              if(response.data.length === 0){
-                  return console.log("Sorry, no concert for " +artist.trim());
-              }
-              //console.log the artist name
-              //then for loop to display all info
-              console.log(artist.trim() + " concert list");
-              for (var i =0; i< response.data.length; i++)
-              {
-                  console.log("------------------------------");
-                  console.log(`Artist: ${artist}`);
-                  console.log(`Venue Name: ${response.data[i].venue.name}`);
-                  console.log(`Venue Location: ${response.data[i].venue.city}, ${response.data[i].venue.country}`);
-                  console.log(`Date of Event: ${moment(response.data[i].datetime).format("L")}`);
-                  console.log("------------------------------");
-              } 
-          })
-      .catch(function(error) {
-          if (error.response) {
-              // The request was made and the server responded with a status code
-              // that falls out of the range of 2xx
-              console.log("---------------Data---------------");
-              console.log(error.response.data);
-              console.log("---------------Status---------------");
-              console.log(error.response.status);
-              console.log("---------------Status---------------");
-              console.log(error.response.headers);
-          } else if (error.request) {
-              // The request was made but no response was received
-              // `error.request` is an object that comes back with details pertaining to the error that occurred.
-              console.log(error.request);
-          } else {
-              // Something happened in setting up the request that triggered an Error
-              console.log("Error", error.message);
-          }
-          console.log(error.config);
+      //using prompt to ask using to enter the id number of the product they want to buy
+      inquirer.prompt([
+        {
+          type: "input",
+          name: "idNumber",
+          message: "Please slected the ID number of the item you would like to purchase",
+        }
+      ]).then(function (response) {
+        //check to see if item exist
+        seeIfItemExist(response.idNumber);
       });
+    });
   }
 ```
 
-#### Do What It Says Function
-The doWhat Function reads the file, then puts all the text in the array
-We look through the array and run the commands.
-Once we found the correct command, we run their function
-``` javascript
-function doWhat(){
-    fs.readFile("random.txt", "utf8", function(error, data) {
+#### seeIfItemExist(itemID) Function
 
-        // If the code experiences any errors it will log the error to the console.
-        if (error) {
-          return console.log(error);
-        }
-      
-        // Then split it by commas (to make it more readable)
-        var dataArr = data.split(",");
-        
-      
-        // We will then re-display the content as an array for later use.
-        for (var i =0; i<dataArr.length-1; i++){
-            switch(dataArr[i]){
-                case "spotify-this-song":
-                    spotifySearch(dataArr[i+1]);
-                    break;
-                case "concert-this":
-                    concert(dataArr[i+1]);
-                    break;
-                case "movie-this":
-                    movie(dataArr[i+1]);
-                    break;
-                // default:
-                //     console.log("Sorry, file is corrupt. Please make sure file has a format of [command],[argument].")
+This function checks to see if an item exists. The function takes a itemID that is used in the sql command. If `res.length === 0`, we know that the sql command returned nothing. From there, the function tells the program to display a error message and restarts the program by calling `selectItem();`
 
-            }
-        }
-      
-      });
-}
+```javascript
+    function seeIfItemExist(itemID) {
+    //calling a sql command
+    connection.query("SELECT item_id FROM items WHERE item_id = "+parseInt(itemID), function (err, res) {
+      if (err) throw err;
+      //if res.length ===0, we know that we did not find that item
+      //display error message
+      if(res.length === 0){
+        console.log("\n---------------------------------------------");
+        console.log("-----------------ERROR-----------------------");
+        console.log("---------------------------------------------");
+        console.log("Sorry, Item doesn't exist. Restarting program");
+        console.log("---------------------------------------------");
+        console.log("---------------------------------------------");
+        console.log("---------------------------------------------\n");
+        selectItem();
+      }
+      //else, we know we found an item, call prompts
+      else{
+        inquirer.prompt([
+          {
+            type: "input",
+            name: "quanity",
+            message: "How much would you like?",
+          }
+        ]).then(function (response) {
+          //once we get a response, we see if we have enough in stock
+          enoughInStock(response.quanity, itemID);
+        });
+      }
+    });
+  }
 ```
 
-### Switch Statment
+### enoughInStock(stockNumber, theItem) Function
 
-I used a swtich statment to call the correct function based on the command the user entered
+This function sees if bamazon has enough in stock. The function takes a stockNumber (what the user entered in) and theItem (id of the product). The functions makes a sql call to get the current price, product name, and stock quantity of theItem. from there, we see if the stockNumber is greater than the stock quantity. If it is we tell the user to enter a new amount, then we recall the function. If the stockNumber is not greater than the stock quantity, the functions updates the product with the new stock quantity and displays the user the total. 
 
-``` javascript
-    //switch case to see what the userInput is
-    //then calling the correct function
-    switch (userInput) {
-        case "spotify-this-song":
-            spotifySearch(process.argv.slice(3).join(" ")); 
-            break;
-        case "concert-this":
-            concert(process.argv.slice(3).join(" "));
-            break;
-        case "movie-this":
-            movie(process.argv.slice(3).join(" "));
-            break;
-        case "do-what-it-says":
-            doWhat();
-            break;
-        default:
-            console.log("-------------------------");
-            console.log("Please use spotify-this-song <input>, to search a song\nPlease use concert-this <input>, to search a concert\nPlease use moive-this <input>, to search a movie\nPlease use do-what-it-says to use a text file to search for you.")
-            console.log("-------------------------");
+```javascript 
+    function enoughInStock(stockNumber, theItem){
+      //connection to call sql command
+      connection.query("SELECT price, product_name, stock_quantity FROM items WHERE item_id = "+parseInt(theItem), function (err, res) {
+        if (err) throw err;
+        //the current stock quantity
+        var oldStockQuantity = parseInt(res[0].stock_quantity);
+        //the price of the item
+        var thePrice = parseInt(res[0].price);
+        //if the users quantity number is greater than the current stock quantity
+        //we tell the user that we do not have enough and to enter another quantity number
+        //from there, call another prompt and recall the current function (enoughInStock)
+        if(stockNumber > res[0].stock_quantity){
+          console.log("Sorry, we do not have enough! Please select another quantity number. If you want to quit the program press CTRL+C");
+          inquirer.prompt([
+            {
+              type: "input",
+              name: "quanity",
+              message: "How much would you like?",
+            }
+          ]).then(function (response) {
+            //calling en
+            enoughInStock(response.quanity, theItem);
+          });
+        }
+        //else, we know there is enough in stock
+        else {
+          //setting the new stock amount of that item
+          var newStock = oldStockQuantity - parseInt(stockNumber);
+          //the total of what the user owes
+          var total = thePrice*parseInt(stockNumber);
+          //calling another query to update the item stock quantity
+          connection.query("UPDATE items SET stock_quantity="+newStock+" WHERE item_id="+theItem, function (err, res) {
+            // console.log(res);
+            if (err) throw err;
+            console.log("Thanks! Your total is $"+ total+ ". Taking you back to the home screen! If you want to quit the program press CTRL+C\n");
+            //calling selectItem() [restarting program]
+            selectItem();
+          });
+        }
+      });
     }
 ```
+
 
 ## My role
 Application developer

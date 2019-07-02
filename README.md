@@ -165,7 +165,7 @@ This function checks to see if an item exists. The function takes a itemID that 
   }
 ```
 
-### enoughInStock(stockNumber, theItem) Function
+#### enoughInStock(stockNumber, theItem) Function
 
 This function sees if bamazon has enough in stock. The function takes a stockNumber (what the user entered in) and theItem (id of the product). The functions makes a sql call to get the current price, product name, and stock quantity of theItem. from there, we see if the stockNumber is greater than the stock quantity. If it is we tell the user to enter a new amount, then we recall the function. If the stockNumber is not greater than the stock quantity, the functions updates the product with the new stock quantity and displays the user the total. 
 
